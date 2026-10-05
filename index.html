@@ -29,6 +29,7 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 [hidden]{display:none!important}
 html,body{height:100%}
+html{font-size:clamp(16px,0.9vw + 11px,22px)}
 body{
   background:
     radial-gradient(1.5px 1.5px at 12% 18%,#fff8 50%,transparent 51%),
@@ -39,7 +40,7 @@ body{
     radial-gradient(120% 60% at 50% 115%,#ff6a2b55,transparent 60%),
     linear-gradient(180deg,var(--sky) 0%,var(--sky2) 100%);
   background-attachment:fixed;
-  color:var(--paper);font-family:var(--f-body);font-size:16px;line-height:1.5;padding-inline:16px;padding-block:0;overflow-x:hidden}
+  color:var(--paper);font-family:var(--f-body);font-size:1rem;line-height:1.5;padding-inline:16px;padding-block:0;overflow-x:hidden}
 button,input{font:inherit;color:inherit}
 button{cursor:pointer}
 :focus-visible{outline:3px solid var(--c-timer);outline-offset:3px}
@@ -64,8 +65,8 @@ p{margin:0}
 .hero h1{font-family:var(--f-pop);font-size:clamp(2.3rem,11vw,3.4rem);line-height:1.05;letter-spacing:-.01em;color:var(--paper);text-shadow:3px 3px 0 var(--ink),6px 6px 0 var(--c-body)}
 .hero p{color:var(--muted)}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.gt{position:relative;display:flex;flex-direction:column;justify-content:space-between;gap:10px;text-align:left;background:var(--g);color:var(--ink);padding:14px;min-height:150px;overflow:hidden}
-.gt.wide{grid-column:1/-1;min-height:130px;flex-direction:row;align-items:center}
+.gt{position:relative;display:flex;flex-direction:column;justify-content:space-between;gap:10px;text-align:left;background:var(--g);color:var(--ink);padding:14px;min-height:9.5rem;overflow:hidden}
+.gt.wide{grid-column:1/-1;min-height:8rem;flex-direction:row;align-items:center;justify-content:flex-start;gap:1.2rem}
 .gt .ic{font-size:2.6rem;line-height:1;filter:drop-shadow(2px 2px 0 rgba(15,8,40,.35))}
 .gt.wide .ic{font-size:3.6rem}
 .gt b{font-family:var(--f-pop);font-weight:400;font-size:1.3rem;line-height:1.15;display:block}
@@ -74,6 +75,7 @@ p{margin:0}
 .gt::after{content:"";position:absolute;right:-26px;top:-26px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.28)}
 .gt:nth-child(2){transform:rotate(-1.2deg)} .gt:nth-child(3){transform:rotate(1.2deg)} .gt:nth-child(4){transform:rotate(.8deg)} .gt:nth-child(5){transform:rotate(-.8deg)}
 .gt:active{transform:translateY(4px) rotate(0)}
+.home-cols{display:flex;flex-direction:column;gap:20px}
 .board{background:var(--card);padding:16px;display:flex;flex-direction:column;gap:14px}
 .board h2{font-family:var(--f-pop);font-size:1.3rem}
 .team{display:flex;align-items:center;gap:12px}
@@ -107,7 +109,7 @@ summary{cursor:pointer;font-family:var(--f-display);font-size:1.05rem}
 .chip{min-height:46px;padding:8px 18px;border-radius:999px;border:3px solid var(--ink);background:var(--card);color:var(--paper);font-family:var(--f-display);font-size:1.05rem}
 .chip[aria-pressed="true"]{background:var(--g);color:var(--ink);box-shadow:0 3px 0 var(--ink);transform:translateY(-2px)}
 .topics{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.topic{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:108px;background:var(--card);color:var(--paper);border:3px solid var(--ink);border-radius:20px;box-shadow:var(--sh);padding:10px}
+.topic{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:6.75rem;background:var(--card);color:var(--paper);border:3px solid var(--ink);border-radius:20px;box-shadow:var(--sh);padding:10px}
 .topic .e{font-size:2.6rem;line-height:1}
 .topic b{font-family:var(--f-pop);font-weight:400;font-size:1.35rem;line-height:1.1}
 .topic small{font-size:.75rem;opacity:.7}
@@ -138,9 +140,9 @@ summary{cursor:pointer;font-family:var(--f-display);font-size:1.05rem}
 @keyframes cd{0%{transform:scale(2.2);opacity:0}30%{transform:scale(.9);opacity:1}100%{transform:scale(1)}}
 
 /* quiz */
-#qPad{flex:1;min-height:0;margin-bottom:12px;border-radius:28px;border:4px solid var(--ink);box-shadow:0 7px 0 var(--ink);background:var(--g);color:var(--ink);display:grid;place-items:center;position:relative;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;padding:16px;
+#qPad{flex:1;min-height:0;margin-bottom:12px;border-radius:28px;border:4px solid var(--ink);box-shadow:0 7px 0 var(--ink);background:var(--g);color:var(--ink);display:grid;place-items:center;position:relative;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;padding:2.4rem 1rem;
   background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.14) 0 18px,transparent 18px 36px)}
-#qWord{font-family:var(--f-pop);font-size:min(16vw,15vh);line-height:1.15;text-align:center;word-break:keep-all;text-wrap:balance;animation:pop .25s cubic-bezier(.2,1.6,.4,1)}
+#qWord{width:100%;max-height:100%;overflow:hidden;font-family:var(--f-pop);font-size:min(16vw,15vh);line-height:1.15;text-align:center;word-break:keep-all;text-wrap:balance;animation:pop .25s cubic-bezier(.2,1.6,.4,1)}
 @keyframes pop{from{transform:scale(.6) rotate(-4deg);opacity:0}to{transform:none;opacity:1}}
 .hint{position:absolute;inset-inline:0;bottom:12px;text-align:center;font-size:.9rem;font-weight:900;opacity:.6}
 .arrow{position:absolute;inset-inline:0;top:10px;text-align:center;font-size:.9rem;font-weight:900;opacity:.6}
@@ -154,27 +156,37 @@ summary{cursor:pointer;font-family:var(--f-display);font-size:1.05rem}
 
 /* timer */
 #tRun{position:fixed;inset:0;background:radial-gradient(circle at 50% 50%,#1a0f3f,#05020f);color:#d7d0ff;display:grid;place-items:center;text-align:center;padding:24px;z-index:5;touch-action:manipulation}
-#tRun p{font-family:var(--f-display);font-size:1.6rem;line-height:1.4;max-width:14em;animation:breathe 4s ease-in-out infinite}
-#tRun small{display:block;margin-top:12px;font-family:var(--f-body);font-size:.9rem;opacity:.6}
+.tWrap{display:flex;flex-direction:column;align-items:center;gap:2.2rem}
+.tMsg{font-family:var(--f-display);font-size:1.5rem;line-height:1.4;max-width:14em;opacity:.75}
+.tMsg small{display:block;margin-top:10px;font-family:var(--f-body);font-size:.9rem;opacity:.7}
+/* the stop button: no pulsing, so it never gives away a rhythm to count with */
+#tBtn{width:min(62vmin,22rem);aspect-ratio:1;max-width:100%;border-radius:50%;border:7px solid var(--ink);
+  background:radial-gradient(circle at 35% 28%,#c9f9ff 0%,var(--c-timer) 38%,#1489b8 100%);
+  box-shadow:0 14px 0 var(--ink),0 0 0 16px rgba(63,224,255,.10),0 0 0 32px rgba(63,224,255,.05),0 0 70px rgba(63,224,255,.35);
+  color:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.2rem;
+  transition:transform .08s,box-shadow .08s;touch-action:manipulation}
+#tBtn .b1{font-family:var(--f-pop);font-size:clamp(2.8rem,13vmin,5.4rem);line-height:1;text-shadow:0 3px 0 rgba(255,255,255,.45)}
+#tBtn .b2{font-family:var(--f-display);font-size:clamp(1.1rem,4.5vmin,1.8rem);opacity:.8}
+#tBtn:active,#tBtn.pressed{transform:translateY(12px);box-shadow:0 2px 0 var(--ink),0 0 0 16px rgba(63,224,255,.18),0 0 90px rgba(63,224,255,.6)}
 @keyframes breathe{0%,100%{opacity:.3}50%{opacity:.85}}
 
 /* choseong */
 #cPrompt{font-family:var(--f-pop);font-size:clamp(4.5rem,32vw,10rem);line-height:1;letter-spacing:.05em;color:var(--g);text-shadow:5px 5px 0 var(--ink)}
 .turns{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;width:100%}
-.turns div{width:56px;height:56px;display:grid;place-items:center;border:3px solid var(--ink);border-radius:16px;font-family:var(--f-pop);font-size:1.6rem;background:var(--card);color:var(--muted)}
+.turns div{width:3.5rem;height:3.5rem;display:grid;place-items:center;border:3px solid var(--ink);border-radius:16px;font-family:var(--f-pop);font-size:1.6rem;background:var(--card);color:var(--muted)}
 .turns div.cur{background:var(--g);color:var(--ink);transform:translateY(-6px) scale(1.12);box-shadow:var(--sh);animation:bob 1s ease-in-out infinite}
 .turns div.done{background:var(--good);color:var(--ink)}
 @keyframes bob{50%{transform:translateY(-10px) scale(1.12)}}
 .bar-t{width:100%;height:14px;border-radius:99px;background:var(--card);border:3px solid var(--ink);overflow:hidden}
 .bar-t i{display:block;height:100%;background:var(--g);width:100%;transition:width .2s linear}
 .stepper{display:flex;align-items:center;gap:16px}
-.stepper button{width:60px;height:60px;border-radius:18px;border:3px solid var(--ink);background:var(--g);color:var(--ink);font-family:var(--f-pop);font-size:2rem;box-shadow:var(--sh)}
+.stepper button{width:3.75rem;height:3.75rem;border-radius:18px;border:3px solid var(--ink);background:var(--g);color:var(--ink);font-family:var(--f-pop);font-size:2rem;box-shadow:var(--sh)}
 .stepper button:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
 .stepper output{font-family:var(--f-pop);font-size:3rem;min-width:2.4em;text-align:center;color:var(--g);text-shadow:3px 3px 0 var(--ink)}
 
 /* charades */
 #hEmoji{font-size:min(36vw,25vh);line-height:1;animation:pop .3s cubic-bezier(.2,1.6,.4,1)}
-#hWord{font-family:var(--f-pop);font-size:min(13vw,9vh);line-height:1.15;text-align:center;word-break:keep-all;text-shadow:3px 3px 0 var(--ink)}
+#hWord{width:100%;overflow:hidden;font-family:var(--f-pop);font-size:min(13vw,9vh);line-height:1.15;text-align:center;word-break:keep-all;text-shadow:3px 3px 0 var(--ink)}
 #hCat{font-family:var(--f-display);background:var(--g);color:var(--ink);border:3px solid var(--ink);border-radius:999px;padding:2px 14px}
 
 /* bomb */
@@ -209,7 +221,7 @@ summary{cursor:pointer;font-family:var(--f-display);font-size:1.05rem}
 #pStage{position:absolute;left:10px;top:10px;font-family:var(--f-pop);background:var(--g);color:var(--ink);border:3px solid var(--ink);border-radius:999px;padding:0 12px;font-size:1.1rem}
 #pHint{position:absolute;inset-inline:10px;bottom:10px;text-align:center;font-family:var(--f-pop);font-size:1.6rem;letter-spacing:.12em;background:rgba(15,8,40,.82);border:3px solid var(--ink);border-radius:16px;padding:4px 8px;color:var(--c-quiz)}
 #pAns{flex:none;text-align:center;padding-bottom:4px}
-#pAns b{display:block;font-family:var(--f-pop);font-size:clamp(1.6rem,8vw,2.4rem);line-height:1.15;color:var(--g);text-shadow:3px 3px 0 var(--ink);word-break:keep-all}
+#pAns b{display:block;width:100%;overflow:hidden;font-family:var(--f-pop);font-size:clamp(1.6rem,8vw,2.4rem);line-height:1.15;color:var(--g);text-shadow:3px 3px 0 var(--ink);word-break:keep-all}
 #pAns small{color:var(--muted)}
 .load{width:64px;height:64px;border-radius:50%;border:8px solid var(--card);border-top-color:var(--g);animation:spin .8s linear infinite}
 .credit{color:var(--muted);font-size:.72rem;line-height:1.4}
@@ -219,6 +231,22 @@ summary{cursor:pointer;font-family:var(--f-display);font-size:1.05rem}
 #s-poster{--g:var(--c-poster)}
 #s-quiz{--g:var(--c-quiz)} #s-timer{--g:var(--c-timer)} #s-cho{--g:var(--c-cho)} #s-body{--g:var(--c-body)} #s-bomb{--g:var(--c-bomb)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* tablets and wide screens */
+@media (min-width:760px){
+  #app{max-width:1040px}
+  .grid{grid-template-columns:repeat(3,1fr);gap:18px}
+  .gt.wide{grid-column:1/-1}
+  #posterTile{grid-column:span 2}
+  .grid:has(#posterTile[hidden]) [data-go="bomb"]{grid-column:1/-1;flex-direction:row;align-items:center;justify-content:flex-start;gap:1.2rem}
+  .topics{grid-template-columns:repeat(4,1fr)}
+  #pCats{grid-template-columns:repeat(3,1fr)}
+  .home-cols{display:grid;grid-template-columns:1.2fr 1fr;gap:18px;align-items:start}
+  .stack{padding-inline:0}
+  #bombSvg{width:min(40vw,40vh)}
+}
+@media (min-width:760px) and (orientation:landscape){
+  #s-quiz .mini, #s-body .btns{max-width:720px;margin-inline:auto;width:100%}
+}
 @media (max-height:560px){.bar{padding-block:6px}.btn{min-height:50px;font-size:1.25rem}.topic{min-height:80px}}
 </style>
 
@@ -241,23 +269,6 @@ summary{cursor:pointer;font-family:var(--f-display);font-size:1.05rem}
     <button class="gt stk" data-go="bomb" style="--g:var(--c-bomb)"><span class="ic">💣</span><span><b>랜덤 폭탄</b><small>언제 터질지 몰라요</small></span></button>
     <button class="gt wide stk" data-go="poster" id="posterTile" style="--g:var(--c-poster)" hidden><span class="ic">🎬</span><span><b>포스터 보고 제목 맞히기</b><small>흐릿한 포스터가 점점 선명해져요</small></span></button>
   </div>
-  <div class="board stk">
-    <h2>오늘 저녁 점수</h2>
-    <div class="team"><span class="n" id="scTeam">0</span><span>가족 점수<br>(퀴즈·초성·몸으로 말해요)</span></div>
-    <div>
-      <div class="lab">10초 맞추기 우승</div>
-      <div class="wins" id="scWins"></div>
-    </div>
-    <div>
-      <button class="linkbtn" id="scReset" type="button">점수 지우기</button>
-      <span id="scAsk" hidden> 정말 지울까요? <button class="linkbtn" id="scYes" type="button">지우기</button> · <button class="linkbtn" id="scNo" type="button">취소</button></span>
-    </div>
-  </div>
-  <details class="stk">
-    <summary>10초 게임 이름 · 효과음</summary>
-    <div class="names" id="nameBox"></div>
-    <label class="toggle"><input type="checkbox" id="soundOn"> 효과음 켜기</label>
-  </details>
   <p class="tip">모닥불과 화로에서 떨어진 곳에서 즐겨요. 몸을 쓰는 벌칙은 주변을 살피고 해요.</p>
 </section>
 
@@ -296,12 +307,15 @@ summary{cursor:pointer;font-family:var(--f-display);font-size:1.05rem}
   <div class="ph" data-ph="intro">
     <div class="stack">
       <div class="rule stk"><b>이렇게 해요</b><span>시작하면 화면이 어두워져요. 마음속으로 세다가 딱 맞다고 느낄 때 화면을 터치해요. 목표에 가장 가까운 사람이 우승이에요.</span></div>
+      <div><div class="lab">참가 인원</div>
+        <div class="stepper"><button type="button" id="tMinus" aria-label="인원 줄이기">−</button><output id="tCount">4명</output><button type="button" id="tPlus" aria-label="인원 늘리기">+</button></div>
+      </div>
       <div><div class="lab">목표 시간</div><div class="chips" id="tTarget"></div></div>
     </div>
     <div class="btns"><button class="btn" id="tStart">시작!</button></div>
   </div>
   <div class="ph" data-ph="turn" hidden>
-    <div class="center"><div class="note" id="tTurnN">1 / 4</div><div class="big" id="tWho">아빠</div><p class="note">시작을 누르는 순간부터 세요</p></div>
+    <div class="center"><div class="note" id="tTurnN">1 / 4</div><div class="big" id="tWho">1번</div><p class="note">시작을 누르는 순간부터 세요</p></div>
     <div class="btns"><button class="btn" id="tGo">시작</button></div>
   </div>
   <div class="ph" data-ph="show" hidden>
@@ -316,7 +330,7 @@ summary{cursor:pointer;font-family:var(--f-display);font-size:1.05rem}
     <div class="btns"><button class="btn ghost" data-home>홈</button><button class="btn" id="tAgain">한 번 더</button></div>
   </div>
 </section>
-<div id="tRun" hidden><p>마음속으로 세고<br>딱 맞을 때 화면을 터치<small id="tHint"></small></p></div>
+<div id="tRun" hidden><div class="tWrap"><p class="tMsg">마음속으로 세다가<br>딱 맞을 때 누르세요<small id="tHint"></small></p><button type="button" id="tBtn" aria-label="지금 멈추기"><span class="b1">STOP</span><span class="b2">지금!</span></button></div></div>
 
 <!-- CHOSEONG -->
 <section class="screen" id="s-cho" hidden>
@@ -421,7 +435,7 @@ summary{cursor:pointer;font-family:var(--f-display);font-size:1.05rem}
   <div class="bar"><button class="back" data-home>홈</button><h2>포스터 퀴즈</h2></div>
   <div class="ph" data-ph="intro">
     <div class="stack">
-      <div class="rule stk"><b>이렇게 해요</b><span>흐릿한 이미지가 3초마다 조금씩 선명해져요. 아는 사람이 먼저 제목을 외치고, 정답 보기로 확인해요. 빨리 맞힐수록 점수가 커요 (5점→1점). 초성 힌트를 쓰면 1점이 빠져요.</span></div>
+      <div class="rule stk"><b>이렇게 해요</b><span>유명한 작품부터 나와요. 흐릿한 이미지가 3초마다 조금씩 선명해져요. 아는 사람이 먼저 제목을 외치고, 정답 보기로 확인해요. 빨리 맞힐수록 점수가 커요 (5점→1점). 초성 힌트를 쓰면 1점이 빠져요. 한번에 공개를 고르면 처음부터 다 보이고, 점수만 시간에 따라 줄어요.</span></div>
       <div><div class="lab">무엇을 맞힐까요</div><div class="topics" id="pCats"></div></div>
       <div><div class="lab">이미지</div><div class="chips" id="pKind"></div></div>
       <div><div class="lab">공개 방식</div><div class="chips" id="pMode"></div></div>
@@ -507,9 +521,9 @@ var PEN=['동물 소리를 내며 제자리에서 한 바퀴 돌기','애교 3�
 /* ---------- state ---------- */
 var store={get:function(){try{return JSON.parse(localStorage.getItem('campgames')||'null')}catch(e){return null}},set:function(v){try{localStorage.setItem('campgames',JSON.stringify(v))}catch(e){}}};
 var S={names:['아빠','엄마','첫째','둘째'],wins:[0,0,0,0],team:0,sound:true,players:4};
-(function(){var o=store.get();if(o&&typeof o==='object'){if(Array.isArray(o.names)&&o.names.length===4)S.names=o.names;if(Array.isArray(o.wins)&&o.wins.length===4)S.wins=o.wins;if(typeof o.team==='number')S.team=o.team;if(typeof o.sound==='boolean')S.sound=o.sound;if(typeof o.players==='number'&&o.players>=2&&o.players<=10)S.players=o.players}})();
+(function(){var o=store.get();if(o&&typeof o==='object'){if(Array.isArray(o.names)&&o.names.length===4)S.names=o.names;if(Array.isArray(o.wins)&&o.wins.length===4)S.wins=o.wins;if(typeof o.team==='number')S.team=o.team;if(typeof o.players==='number'&&o.players>=2&&o.players<=10)S.players=o.players}})();
 function save(){store.set(S)}
-function nm(i){return (S.names[i]||'').trim()||(i+1)+'번'}
+function nm(i){return (i+1)+'번'}
 
 /* ---------- helpers ---------- */
 function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
@@ -538,6 +552,19 @@ function chips(root,items,sel,on){
 }
 function words(el,list,cls){el.innerHTML='';if(!list.length){var s=document.createElement('span');s.className='sub';s.textContent='없음';el.appendChild(s);return}list.forEach(function(w){var s=document.createElement('span');s.className='w '+(cls||'');s.textContent=w;el.appendChild(s)})}
 function replay(el){el.style.animation='none';void el.offsetWidth;el.style.animation=''}
+/* shrink text until it fits its box (no clipping on long titles like 투모로우바이투게더) */
+function fitText(el,maxPx,minPx){
+  if(!el||el.offsetParent===null)return;
+  minPx=minPx||16;var size=Math.max(minPx,maxPx);
+  el.style.overflowWrap='normal';el.style.fontSize=size+'px';
+  var guard=60;
+  while(guard-->0&&size>minPx&&(el.scrollWidth>el.clientWidth+1||el.scrollHeight>el.clientHeight+1)){size=Math.max(minPx,size*0.92);el.style.fontSize=size+'px'}
+  if(el.scrollWidth>el.clientWidth+1)el.style.overflowWrap='anywhere';
+}
+function fitQuiz(){var pad=$('#qPad');fitText($('#qWord'),Math.min(pad.clientHeight*0.4,pad.clientWidth*0.26,220),18)}
+function fitBody(){fitText($('#hWord'),Math.min(innerWidth*0.14,innerHeight*0.1,96),18)}
+function fitPoster(){fitText($('#pTitle'),Math.min(innerWidth*0.09,48),16)}
+window.addEventListener('resize',function(){fitQuiz();fitBody();fitPoster()});
 
 /* ---------- sound engine ---------- */
 var ac=null,master=null,noiseBuf=null;
@@ -654,22 +681,8 @@ function fxLoop(){
 }
 
 /* ---------- home ---------- */
-function renderHome(){
-  $('#scTeam').textContent=S.team;
-  var w=$('#scWins');w.innerHTML='';
-  for(var i=0;i<4;i++){var d=document.createElement('div');d.innerHTML='<b></b><small></small>';d.firstChild.textContent=S.wins[i];d.lastChild.textContent=nm(i);w.appendChild(d)}
-}
+function renderHome(){}
 (function(){
-  var box=$('#nameBox');
-  for(var i=0;i<4;i++){(function(i){
-    var inp=document.createElement('input');inp.type='text';inp.id='name'+i;inp.maxLength=8;inp.value=S.names[i];inp.setAttribute('aria-label',(i+1)+'번째 참가자 이름');
-    inp.addEventListener('input',function(){S.names[i]=inp.value;save();renderHome()});
-    box.appendChild(inp);
-  })(i)}
-  var so=$('#soundOn');so.checked=S.sound;so.addEventListener('change',function(){S.sound=so.checked;save();if(S.sound)sfx.correct()});
-  $('#scReset').onclick=function(){$('#scReset').hidden=true;$('#scAsk').hidden=false};
-  $('#scNo').onclick=function(){$('#scReset').hidden=false;$('#scAsk').hidden=true};
-  $('#scYes').onclick=function(){S.team=0;S.wins=[0,0,0,0];save();renderHome();$('#scReset').hidden=false;$('#scAsk').hidden=true};
   $$('[data-go]').forEach(function(b){b.addEventListener('click',function(){audio();sfx.tap();var g=b.getAttribute('data-go');show('s-'+g);phase($('#s-'+g),'intro')})});
   $$('[data-home]').forEach(function(b){b.addEventListener('click',function(){sfx.tap();show('s-home')})});
 })();
@@ -698,7 +711,7 @@ function countdown(root,el,done){
 }
 function qPlay(){
   Q.deck=shuffle(qWords());Q.i=0;Q.right=[];Q.pass=[];Q.end=Date.now()+Q.secs*1000;Q.live=true;Q.lastTick=-1;
-  phase(qs,'play');$('#qWord').textContent=qCur();qUpd();every(qUpd,200);
+  phase(qs,'play');$('#qWord').textContent=qCur();fitQuiz();qUpd();every(qUpd,200);
 }
 function qUpd(){
   if(!Q.live)return;
@@ -713,7 +726,7 @@ function qAnswer(isOk){
   $('#qScore').textContent='정답 '+Q.right.length;
   var f=$('#qFlash');f.className='';void f.offsetWidth;f.className=isOk?'ok':'no';f.textContent=isOk?'정답!':'패스';
   if(isOk){sfx.correct();buzz(35)}else sfx.pass();
-  var el=$('#qWord');replay(el);el.textContent=qCur();
+  var el=$('#qWord');replay(el);el.textContent=qCur();fitQuiz();
 }
 function qFinish(){
   Q.live=false;clearAll();sfx.buzzer();buzz([150,60,150]);
@@ -746,8 +759,11 @@ $('#qNo').onclick=function(){qAnswer(false)};
 /* ---------- 2. 10 seconds ---------- */
 var ts=$('#s-timer'),T={target:10,i:0,res:[],t0:0,armed:false};
 chips($('#tTarget'),[5,10,15,20].map(function(s){return{label:s+'초',value:s}}),T.target,function(v){T.target=v});
-function tTurn(){phase(ts,'turn');$('#tWho').textContent=nm(T.i);$('#tTurnN').textContent=(T.i+1)+' / 4'}
-$('#tStart').onclick=function(){audio();sfx.tap();T.i=0;T.res=[];tTurn()};
+function tTurn(){phase(ts,'turn');$('#tWho').textContent=nm(T.i)+' 차례';$('#tTurnN').textContent=(T.i+1)+' / '+T.n}
+function syncCount(){$('#tCount').textContent=S.players+'명';$('#cCount').textContent=S.players+'명'}
+$('#tMinus').onclick=function(){if(S.players>2){S.players--;save();syncCount();sfx.tap()}};
+$('#tPlus').onclick=function(){if(S.players<10){S.players++;save();syncCount();sfx.tap()}};
+$('#tStart').onclick=function(){audio();sfx.tap();T.n=S.players;T.i=0;T.res=[];tTurn()};
 $('#tGo').onclick=function(){
   audio();sfx.go();$('#tHint').textContent='목표 '+T.target+'초';
   $('#tRun').hidden=false;T.t0=performance.now();T.armed=false;later(function(){T.armed=true},400);
@@ -755,7 +771,8 @@ $('#tGo').onclick=function(){
 $('#tRun').addEventListener('pointerdown',function(){
   if(!T.armed)return;T.armed=false;
   var e=(performance.now()-T.t0)/1000;T.res.push({i:T.i,e:e});
-  $('#tRun').hidden=true;buzz(40);tShow(e);
+  $('#tBtn').classList.add('pressed');buzz(40);sfx.tap();
+  later(function(){$('#tRun').hidden=true;$('#tBtn').classList.remove('pressed');tShow(e)},180);
 });
 function tShow(e){
   phase(ts,'show');
@@ -765,13 +782,12 @@ function tShow(e){
   else if(ad<0.5){msg=(d>0?'+':'−')+ad.toFixed(2)+'초, 아깝다!';sfx.correct()}
   else{msg=(d>0?'+':'−')+ad.toFixed(2)+'초 '+(d>0?'늦었어요':'빨랐어요');sfx.slot()}
   $('#tShowD').textContent=msg;
-  $('#tNext').textContent=T.i<3?'다음: '+nm(T.i+1):'결과 보기';
+  $('#tNext').textContent=T.i<T.n-1?'다음: '+nm(T.i+1):'결과 보기';
 }
-$('#tNext').onclick=function(){sfx.tap();if(T.i<3){T.i++;tTurn()}else tRank()};
+$('#tNext').onclick=function(){sfx.tap();if(T.i<T.n-1){T.i++;tTurn()}else tRank()};
 function tRank(){
   var arr=T.res.map(function(r){return{i:r.i,e:r.e,ad:Math.abs(r.e-T.target)}}).sort(function(a,b){return a.ad-b.ad});
   var best=arr[0].ad,winners=arr.filter(function(r){return Math.abs(r.ad-best)<0.005});
-  winners.forEach(function(w){S.wins[w.i]++});save();
   $('#tWinner').textContent=winners.map(function(w){return nm(w.i)}).join(', ');
   var list=$('#tList');list.innerHTML='';
   arr.forEach(function(r,k){
@@ -787,7 +803,7 @@ $('#tAgain').onclick=function(){sfx.tap();phase(ts,'intro')};
 
 /* ---------- 3. choseong ---------- */
 var cs=$('#s-cho'),C={secs:30,deck:[],di:0,cur:null,k:0,end:0,live:false,lastTick:-1};
-function cCount(){$('#cCount').textContent=S.players+'명'}
+function cCount(){$('#cCount').textContent=S.players+'명';var t=$('#tCount');if(t)t.textContent=S.players+'명'}
 cCount();
 $('#cMinus').onclick=function(){if(S.players>2){S.players--;save();cCount();sfx.tap()}};
 $('#cPlus').onclick=function(){if(S.players<10){S.players++;save();cCount();sfx.tap()}};
@@ -839,11 +855,11 @@ chips($('#hTime'),[60,90,120].map(function(s){return{label:s+'초',value:s}}),H.
 leaveHooks.push(function(){H.live=false});
 function hPool(){return BODY.filter(function(w){return H.level===0||w[2]===H.level})}
 function hCur(){if(H.i>=H.deck.length){H.deck=shuffle(hPool());H.i=0}return H.deck[H.i]}
-function hRender(){var w=hCur();$('#hEmoji').textContent=w[0];$('#hWord').textContent=w[1];$('#hCat').textContent=w[3];replay($('#hEmoji'))}
+function hRender(){var w=hCur();$('#hEmoji').textContent=w[0];$('#hWord').textContent=w[1];$('#hCat').textContent=w[3];replay($('#hEmoji'));fitBody()}
 $('#hStart').onclick=function(){audio();sfx.tap();phase(hs,'cover')};
 $('#hSee').onclick=function(){
   audio();H.deck=shuffle(hPool());H.i=0;H.ok=[];H.end=Date.now()+H.secs*1000;H.live=true;H.lastTick=-1;
-  $('#hScore').textContent='맞춤 0';$('#hLeft').classList.remove('low');hRender();phase(hs,'play');hUpd();every(hUpd,200);sfx.go();
+  $('#hScore').textContent='맞춤 0';$('#hLeft').classList.remove('low');phase(hs,'play');hRender();hUpd();every(hUpd,200);sfx.go();
 };
 function hUpd(){
   if(!H.live)return;
@@ -934,7 +950,7 @@ var BLUR=[38,22,12,5,0],ZOOM=[5,3.4,2.3,1.5,1];
   });
 })();
 chips($('#pKind'),[{label:'포스터',value:'poster'},{label:'명장면 (글자 없음)',value:'backdrop'}],P.kind,function(v){P.kind=v});
-chips($('#pMode'),[{label:'흐림 → 선명',value:'blur'},{label:'확대 → 전체',value:'zoom'},{label:'둘 다',value:'both'}],P.mode,function(v){P.mode=v});
+chips($('#pMode'),[{label:'흐림 → 선명',value:'blur'},{label:'확대 → 전체',value:'zoom'},{label:'둘 다',value:'both'},{label:'한번에 공개',value:'none'}],P.mode,function(v){P.mode=v});
 chips($('#pCount'),[5,10,15].map(function(n){return{label:n+'문제',value:n}}),P.count,function(v){P.count=v});
 $('#pKids').addEventListener('change',function(){P.kids=$('#pKids').checked});
 leaveHooks.push(function(){P.live=false});
@@ -950,11 +966,23 @@ function pLoad(){
   .then(function(j){
     var items=(j.items||[]).filter(function(x){return x.image});
     if(items.length<P.count)throw new Error('이미지를 충분히 찾지 못했어요. 다른 종류를 골라 주세요.');
-    P.items=shuffle(items).slice(0,P.count);P.i=0;P.score=0;P.log=[];
+    P.items=pPick(items);P.i=0;P.score=0;P.log=[];
     pPreload(0);pPreload(1);pShow();
   }).catch(function(e){
     $('#pLoadMsg').textContent=(e&&e.message)||'불러오지 못했어요. 인터넷 연결을 확인해 주세요.';$('#pErrBtns').hidden=false;sfx.fail();
   });
+}
+/* famous first: take the most famous titles not shown recently, then play them from most to least famous */
+var SEEN_KEY='posterSeen';
+function seenGet(){try{var a=JSON.parse(localStorage.getItem(SEEN_KEY)||'[]');return Array.isArray(a)?a:[]}catch(e){return[]}}
+function seenAdd(id){var a=seenGet().filter(function(x){return x!==id});a.push(id);if(a.length>500)a=a.slice(-500);try{localStorage.setItem(SEEN_KEY,JSON.stringify(a))}catch(e){}}
+function pPick(items){
+  items=items.slice().sort(function(a,b){return (b.fame||0)-(a.fame||0)});
+  var seen={};seenGet().forEach(function(id){seen[id]=1});
+  var fresh=items.filter(function(x){return !seen[x.id]});
+  if(fresh.length<P.count)fresh=items;
+  var win=fresh.slice(0,Math.max(P.count+Math.ceil(P.count/2),12));
+  return shuffle(win).slice(0,P.count).sort(function(a,b){return (b.fame||0)-(a.fame||0)});
 }
 function pPreload(i){if(P.items[i]){var im=new Image();im.src=P.items[i].image}}
 function pApply(){
@@ -968,12 +996,12 @@ function pApply(){
   $('#pStage').hidden=!P.live;
 }
 function pShow(){
-  var it=P.items[P.i];P.stage=0;P.hint=false;P.live=true;
+  var it=P.items[P.i];P.stage=0;P.hint=false;P.live=true;seenAdd(it.id);
   phase(ps,'play');
   $('#pNum').textContent=(P.i+1)+'/'+P.items.length;$('#pScore').textContent=P.score+'점';
   $('#pAns').hidden=true;$('#pHint').hidden=true;$('#pAskBtns').hidden=false;$('#pJudgeBtns').hidden=true;$('#pHintBtn').disabled=false;
   var box=$('#pBox'),img=$('#pImg');
-  box.classList.toggle('cover',P.mode!=='blur');
+  box.classList.toggle('cover',P.mode==='zoom'||P.mode==='both');
   img.style.transition='none';
   img.style.transformOrigin=(20+Math.random()*60).toFixed(0)+'% '+(20+Math.random()*60).toFixed(0)+'%';
   pApply();img.src=it.image;void img.offsetWidth;img.style.transition='';
@@ -987,7 +1015,7 @@ $('#pReveal').onclick=function(){
   P.live=false;clearAll();P.stage=4;pApply();
   var it=P.items[P.i];$('#pTitle').textContent=it.title;
   $('#pMeta').textContent=[it.year,it.type==='tv'?'드라마·시리즈':'영화',it.original&&it.original!==it.title?it.original:''].filter(Boolean).join(' · ');
-  $('#pAns').hidden=false;$('#pHint').hidden=true;$('#pAskBtns').hidden=true;$('#pJudgeBtns').hidden=false;
+  $('#pAns').hidden=false;fitPoster();$('#pHint').hidden=true;$('#pAskBtns').hidden=true;$('#pJudgeBtns').hidden=false;
   $('#pHit').textContent='맞힘 +'+P.pts;sfx.slot();
 };
 function pNext(hit){
