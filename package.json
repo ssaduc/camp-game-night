@@ -1,0 +1,8 @@
+{
+  "name": "camp-game-night",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "가족 캠핑 저녁 게임 6종 (포스터 퀴즈는 TMDB API 사용)",
+  "engines": { "node": ">=18" }
+}
