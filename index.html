@@ -156,18 +156,22 @@ summary{cursor:pointer;font-family:var(--f-display);font-size:1.05rem}
 
 /* timer */
 #tRun{position:fixed;inset:0;background:radial-gradient(circle at 50% 50%,#1a0f3f,#05020f);color:#d7d0ff;display:grid;place-items:center;text-align:center;padding:24px;z-index:5;touch-action:manipulation}
+.round.go{animation:pop .35s cubic-bezier(.2,1.6,.4,1);width:min(56vmin,19rem);background:radial-gradient(circle at 35% 28%,#e7ffd9 0%,var(--c-cho) 40%,#3fae2a 100%);
+  box-shadow:0 14px 0 var(--ink),0 0 0 16px rgba(134,245,107,.10),0 0 0 32px rgba(134,245,107,.05),0 0 70px rgba(134,245,107,.3)}
+.round.go:active{box-shadow:0 2px 0 var(--ink),0 0 0 16px rgba(134,245,107,.18),0 0 90px rgba(134,245,107,.5)}
+.round.go .b2{font-size:clamp(.95rem,3.6vmin,1.4rem)}
 .tWrap{display:flex;flex-direction:column;align-items:center;gap:2.2rem}
 .tMsg{font-family:var(--f-display);font-size:1.5rem;line-height:1.4;max-width:14em;opacity:.75}
 .tMsg small{display:block;margin-top:10px;font-family:var(--f-body);font-size:.9rem;opacity:.7}
 /* the stop button: no pulsing, so it never gives away a rhythm to count with */
-#tBtn{width:min(62vmin,22rem);aspect-ratio:1;max-width:100%;border-radius:50%;border:7px solid var(--ink);
+#tBtn,.round{width:min(62vmin,22rem);aspect-ratio:1;max-width:100%;border-radius:50%;border:7px solid var(--ink);
   background:radial-gradient(circle at 35% 28%,#c9f9ff 0%,var(--c-timer) 38%,#1489b8 100%);
   box-shadow:0 14px 0 var(--ink),0 0 0 16px rgba(63,224,255,.10),0 0 0 32px rgba(63,224,255,.05),0 0 70px rgba(63,224,255,.35);
   color:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.2rem;
   transition:transform .08s,box-shadow .08s;touch-action:manipulation}
-#tBtn .b1{font-family:var(--f-pop);font-size:clamp(2.8rem,13vmin,5.4rem);line-height:1;text-shadow:0 3px 0 rgba(255,255,255,.45)}
-#tBtn .b2{font-family:var(--f-display);font-size:clamp(1.1rem,4.5vmin,1.8rem);opacity:.8}
-#tBtn:active,#tBtn.pressed{transform:translateY(12px);box-shadow:0 2px 0 var(--ink),0 0 0 16px rgba(63,224,255,.18),0 0 90px rgba(63,224,255,.6)}
+#tBtn .b1,.round .b1{font-family:var(--f-pop);font-size:clamp(2.8rem,13vmin,5.4rem);line-height:1;text-shadow:0 3px 0 rgba(255,255,255,.45)}
+#tBtn .b2,.round .b2{font-family:var(--f-display);font-size:clamp(1.1rem,4.5vmin,1.8rem);opacity:.8}
+#tBtn:active,#tBtn.pressed,.round:active{transform:translateY(12px);box-shadow:0 2px 0 var(--ink),0 0 0 16px rgba(63,224,255,.18),0 0 90px rgba(63,224,255,.6)}
 @keyframes breathe{0%,100%{opacity:.3}50%{opacity:.85}}
 
 /* choseong */
@@ -321,8 +325,12 @@ summary{cursor:pointer;font-family:var(--f-display);font-size:1.05rem}
     <div class="btns"><button class="btn" id="tStart">시작!</button></div>
   </div>
   <div class="ph" data-ph="turn" hidden>
-    <div class="center"><div class="note" id="tTurnN">1 / 4</div><div class="big" id="tWho">1번</div><p class="note">시작을 누르는 순간부터 세요</p></div>
-    <div class="btns"><button class="btn" id="tGo">시작</button></div>
+    <div class="center">
+      <div class="note" id="tTurnN">1 / 4</div>
+      <div class="big" id="tWho" style="font-size:clamp(2rem,10vw,3.4rem)">1번 차례</div>
+      <button type="button" class="round go" id="tGo" aria-label="시작"><span class="b1">START</span><span class="b2">누르고 세기 시작!</span></button>
+      <p class="note">버튼을 누르는 순간부터 세요</p>
+    </div>
   </div>
   <div class="ph" data-ph="show" hidden>
     <div class="center"><div class="note" id="tShowWho">아빠</div><div class="huge" id="tShowT">10.00</div><div class="big" style="font-size:1.6rem" id="tShowD"></div></div>
@@ -768,7 +776,7 @@ $('#qNo').onclick=function(){qAnswer(false)};
 /* ---------- 2. 10 seconds ---------- */
 var ts=$('#s-timer'),T={target:10,i:0,res:[],t0:0,armed:false};
 chips($('#tTarget'),[5,10,15,20].map(function(s){return{label:s+'초',value:s}}),T.target,function(v){T.target=v});
-function tTurn(){phase(ts,'turn');$('#tWho').textContent=nm(T.i)+' 차례';$('#tTurnN').textContent=(T.i+1)+' / '+T.n}
+function tTurn(){phase(ts,'turn');$('#tWho').textContent=nm(T.i)+' 차례';replay($('#tGo'));$('#tTurnN').textContent=(T.i+1)+' / '+T.n}
 function syncCount(){$('#tCount').textContent=S.players+'명';$('#cCount').textContent=S.players+'명'}
 $('#tMinus').onclick=function(){if(S.players>2){S.players--;save();syncCount();sfx.tap()}};
 $('#tPlus').onclick=function(){if(S.players<10){S.players++;save();syncCount();sfx.tap()}};
