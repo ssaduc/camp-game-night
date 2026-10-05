@@ -215,9 +215,15 @@ summary{cursor:pointer;font-family:var(--f-display);font-size:1.05rem}
 #fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:30}
 
 /* poster quiz */
-#pBox{flex:1;min-height:0;position:relative;border:4px solid var(--ink);border-radius:24px;box-shadow:0 7px 0 var(--ink);overflow:hidden;background:#000;margin-bottom:12px}
+#pBox{container-type:size;flex:1;min-height:0;position:relative;border:4px solid var(--ink);border-radius:24px;box-shadow:0 7px 0 var(--ink);overflow:hidden;background:#000;margin-bottom:12px}
 #pImg{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:filter .9s ease,transform .9s ease;will-change:filter,transform}
 #pBox.cover #pImg{object-fit:cover}
+#pFrame{position:absolute;inset:0;overflow:hidden}
+/* posters usually carry the title in the bottom third: show only the top 2/3 (a 2:3 poster cut to 2:2 = square) */
+#pBox.crop #pFrame{inset:auto;left:50%;top:50%;width:min(100cqw,100cqh);height:min(100cqw,100cqh);transform:translate(-50%,-50%)}
+#pBox.crop #pImg{inset:auto;top:0;left:0;width:100%;height:150%;object-fit:cover;object-position:50% 0}
+#pTap{position:absolute;right:10px;top:10px;font-family:var(--f-display);font-size:.95rem;background:rgba(15,8,40,.8);color:var(--paper);border:2.5px solid var(--ink);border-radius:999px;padding:2px 12px;pointer-events:none}
+#pBox.tap{cursor:pointer}
 #pStage{position:absolute;left:10px;top:10px;font-family:var(--f-pop);background:var(--g);color:var(--ink);border:3px solid var(--ink);border-radius:999px;padding:0 12px;font-size:1.1rem}
 #pHint{position:absolute;inset-inline:10px;bottom:10px;text-align:center;font-family:var(--f-pop);font-size:1.6rem;letter-spacing:.12em;background:rgba(15,8,40,.82);border:3px solid var(--ink);border-radius:16px;padding:4px 8px;color:var(--c-quiz)}
 #pAns{flex:none;text-align:center;padding-bottom:4px}
@@ -435,10 +441,11 @@ summary{cursor:pointer;font-family:var(--f-display);font-size:1.05rem}
   <div class="bar"><button class="back" data-home>홈</button><h2>포스터 퀴즈</h2></div>
   <div class="ph" data-ph="intro">
     <div class="stack">
-      <div class="rule stk"><b>이렇게 해요</b><span>유명한 작품부터 나와요. 흐릿한 이미지가 3초마다 조금씩 선명해져요. 아는 사람이 먼저 제목을 외치면 정답!을 눌러요. 그다음에 이미지가 다 공개되고 정답이 나와요. 빨리 맞힐수록 점수가 커요 (5점→2점). 마지막 완전 공개는 맞혔는지 고른 뒤에만 보여요. 초성 힌트를 쓰면 1점이 빠져요. 한번에 공개를 고르면 처음부터 다 보이고, 점수만 시간에 따라 줄어요.</span></div>
+      <div class="rule stk"><b>이렇게 해요</b><span>유명한 작품부터 나와요. 흐릿한 이미지가 3초마다, 또는 화면을 터치할 때마다 조금씩 선명해져요. 포스터는 제목이 있는 아래쪽 1/3을 가리고 보여줘요. 아는 사람이 먼저 제목을 외치면 정답!을 눌러요. 그다음에 이미지가 다 공개되고 정답이 나와요. 빨리 맞힐수록 점수가 커요 (5점→2점). 마지막 완전 공개는 맞혔는지 고른 뒤에만 보여요. 초성 힌트를 쓰면 1점이 빠져요. 한번에 공개를 고르면 처음부터 다 보이고, 점수만 시간에 따라 줄어요.</span></div>
       <div><div class="lab">무엇을 맞힐까요</div><div class="topics" id="pCats"></div></div>
       <div><div class="lab">이미지</div><div class="chips" id="pKind"></div></div>
       <div><div class="lab">공개 방식</div><div class="chips" id="pMode"></div></div>
+      <div><div class="lab">공개 속도</div><div class="chips" id="pPace"></div></div>
       <div><div class="lab">문제 수</div><div class="chips" id="pCount"></div></div>
       <label class="toggle2"><input type="checkbox" id="pKids" checked> 아이와 함께 (영화는 12세 관람가 이하 위주)</label>
       <p class="credit">This product uses the TMDB API but is not endorsed or certified by TMDB. 영화·드라마 정보와 이미지 출처: The Movie Database (TMDB)</p>
@@ -451,7 +458,7 @@ summary{cursor:pointer;font-family:var(--f-display);font-size:1.05rem}
   </div>
   <div class="ph" data-ph="play" hidden>
     <div class="bar" style="padding-top:0"><span class="score" id="pScore">0점</span><span style="flex:1"></span><span class="pill" id="pNum">1/10</span></div>
-    <div id="pBox"><img id="pImg" alt="" draggable="false"><span id="pStage">5점</span><div id="pHint" hidden></div></div>
+    <div id="pBox"><div id="pFrame"><img id="pImg" alt="" draggable="false"></div><span id="pStage">5점</span><span id="pTap" hidden>👆 터치하면 더 보여요</span><div id="pHint" hidden></div></div>
     <div id="pAns" hidden><b id="pTitle"></b><small id="pMeta"></small></div>
     <div class="btns" id="pJudgeBtns"><button class="btn ghost" id="pMiss">몰라요</button><button class="btn" id="pHit">정답! +5</button></div>
     <div style="text-align:center;padding-bottom:10px" id="pHintRow"><button class="linkbtn" id="pHintBtn" type="button">초성 힌트 보기 (−1점)</button></div>
@@ -938,7 +945,7 @@ $('#xRe').onclick=function(){xPenalty();sfx.slot();replay($('#xPen'))};
 
 /* ---------- 6. poster quiz (needs the /api/tmdb proxy; hidden where it is unreachable) ---------- */
 var API='api/tmdb';
-var ps=$('#s-poster'),P={cat:'kr_movie',kind:'poster',mode:'blur',count:10,kids:true,items:[],i:0,stage:0,hint:false,score:0,log:[],live:false};
+var ps=$('#s-poster'),P={cat:'kr_movie',kind:'poster',mode:'blur',pace:'auto',count:10,kids:true,items:[],i:0,stage:0,hint:false,score:0,log:[],live:false};
 var PCATS=[{k:'kr_movie',l:'한국 영화',e:'🎥',c:'#ffd23f'},{k:'kr_tv',l:'한국 드라마',e:'📺',c:'#ff5fa8'},{k:'anim',l:'애니메이션',e:'🧸',c:'#86f56b'},{k:'world',l:'해외 영화',e:'🌎',c:'#3fe0ff'},{k:'mix',l:'다 섞기',e:'🎲',c:'#fff6e3'},{k:'kids',l:'어린이 만화',e:'🐣',c:'#ff9f43'}];
 var BLUR=[38,22,12,5,0],ZOOM=[5,3.4,2.3,1.5,1];
 (function(){
@@ -953,6 +960,7 @@ var BLUR=[38,22,12,5,0],ZOOM=[5,3.4,2.3,1.5,1];
 })();
 chips($('#pKind'),[{label:'포스터',value:'poster'},{label:'명장면 (글자 없음)',value:'backdrop'}],P.kind,function(v){P.kind=v});
 chips($('#pMode'),[{label:'흐림 → 선명',value:'blur'},{label:'확대 → 전체',value:'zoom'},{label:'둘 다',value:'both'},{label:'한번에 공개',value:'none'}],P.mode,function(v){P.mode=v});
+chips($('#pPace'),[{label:'자동 (3초마다)',value:'auto'},{label:'터치할 때마다',value:'tap'}],P.pace,function(v){P.pace=v});
 chips($('#pCount'),[5,10,15].map(function(n){return{label:n+'문제',value:n}}),P.count,function(v){P.count=v});
 $('#pKids').addEventListener('change',function(){P.kids=$('#pKids').checked});
 leaveHooks.push(function(){P.live=false});
@@ -1005,11 +1013,13 @@ function pShow(){
   $('#pAns').hidden=true;$('#pHint').hidden=true;$('#pJudgeBtns').hidden=false;$('#pHintRow').hidden=false;$('#pNextBtns').hidden=true;$('#pUndoRow').hidden=true;$('#pHintBtn').disabled=false;
   var box=$('#pBox'),img=$('#pImg');
   box.classList.toggle('cover',P.mode==='zoom'||P.mode==='both');
+  box.classList.toggle('crop',P.kind==='poster');
+  var tapMode=P.pace==='tap'&&P.mode!=='none';box.classList.toggle('tap',tapMode);$('#pTap').hidden=!tapMode;
   img.style.transition='none';
-  img.style.transformOrigin=(20+Math.random()*60).toFixed(0)+'% '+(20+Math.random()*60).toFixed(0)+'%';
+  img.style.transformOrigin=(20+Math.random()*60).toFixed(0)+'% '+(P.kind==='poster'?(10+Math.random()*40):(20+Math.random()*60)).toFixed(0)+'%';
   pApply();img.src=it.image;void img.offsetWidth;img.style.transition='';
   sfx.go();pPreload(P.i+1);
-  every(function(){if(!P.live)return;if(P.stage<3){P.stage++;pApply();sfx.tick(5-P.stage)}},3000);
+  if(!tapMode)every(function(){if(!P.live)return;if(P.stage<3){P.stage++;pApply();sfx.tick(5-P.stage)}},3000);
 }
 $('#pHintBtn').onclick=function(){if(!P.live||P.hint)return;P.hint=true;var h=$('#pHint');h.textContent=chosung(P.items[P.i].title);h.hidden=false;$('#pHintBtn').disabled=true;sfx.pass();pApply()};
 /* judge first, then reveal the full image and the title */
@@ -1020,6 +1030,7 @@ function pJudge(hit){
   P.log.push({t:it.title,p:hit?pts:0});
   if(hit){P.score+=pts;S.team+=pts;save();sfx.correct();buzz(35)}else sfx.pass();
   $('#pScore').textContent=P.score+'점';
+  $('#pBox').classList.remove('crop','tap','cover');$('#pTap').hidden=true;
   P.stage=4;pApply();
   $('#pTitle').textContent=it.title;
   $('#pMeta').textContent=[it.year,it.type==='tv'?'드라마·시리즈':'영화',it.original&&it.original!==it.title?it.original:''].filter(Boolean).join(' · ');
@@ -1029,6 +1040,10 @@ function pJudge(hit){
   $('#pNextBtns').hidden=false;$('#pUndoRow').hidden=!hit;
   if(!hit)later(sfx.slot,250);
 }
+$('#pBox').addEventListener('click',function(){
+  if(!P.live||P.pace!=='tap'||P.mode==='none')return;
+  if(P.stage<3){P.stage++;pApply();sfx.tick(5-P.stage);if(P.stage>=3)$('#pTap').hidden=true}
+});
 $('#pHit').onclick=function(){pJudge(true)};
 $('#pMiss').onclick=function(){pJudge(false)};
 $('#pUndo').onclick=function(){
