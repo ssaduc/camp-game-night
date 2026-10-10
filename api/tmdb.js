@@ -32,16 +32,16 @@ const BOX_RANK = new Map(KR_BOX.map((t, i) => [norm(t), i]));
 
 // Each category = one or more TMDB "discover" queries, sorted by vote count so the pool is made of well-known titles.
 const CATS = {
-  kr_movie: [{ type: 'movie', params: { with_origin_country: 'KR', 'vote_count.gte': 50 }, pages: 6, cert: 'KR' }],
-  kr_tv: [{ type: 'tv', params: { with_origin_country: 'KR', 'vote_count.gte': 20, without_genres: '10763,10764,10767,16' }, pages: 5 }],
+  kr_movie: [{ type: 'movie', params: { with_origin_country: 'KR', 'vote_count.gte': 30 }, pages: 12, cert: 'KR' }],
+  kr_tv: [{ type: 'tv', params: { with_origin_country: 'KR', 'vote_count.gte': 20, without_genres: '10763,10764,10767,16' }, pages: 10 }],
   anim: [
-    { type: 'movie', params: { with_genres: '16', 'vote_count.gte': 500 }, pages: 4, cert: 'US' },
-    { type: 'tv', params: { with_genres: '16', 'vote_count.gte': 200, without_genres: '10767' }, pages: 2 }
+    { type: 'movie', params: { with_genres: '16', 'vote_count.gte': 300 }, pages: 8, cert: 'US' },
+    { type: 'tv', params: { with_genres: '16', 'vote_count.gte': 200, without_genres: '10767' }, pages: 4 }
   ],
-  world: [{ type: 'movie', params: { 'vote_count.gte': 3000 }, pages: 5, cert: 'US' }],
+  world: [{ type: 'movie', params: { 'vote_count.gte': 2000 }, pages: 10, cert: 'US' }],
   kids: [
-    { type: 'tv', params: { with_genres: '10762', 'vote_count.gte': 10 }, pages: 3 },
-    { type: 'movie', params: { with_genres: '16,10751', 'vote_count.gte': 500 }, pages: 3, cert: 'US' }
+    { type: 'tv', params: { with_genres: '10762', 'vote_count.gte': 5 }, pages: 6 },
+    { type: 'movie', params: { with_genres: '16,10751', 'vote_count.gte': 300 }, pages: 6, cert: 'US' }
   ]
 };
 CATS.mix = [...CATS.kr_movie, ...CATS.kr_tv, ...CATS.anim, ...CATS.world];
@@ -128,7 +128,7 @@ export default async function handler(req, res) {
     let items = await collect(a, cat, k, kids === '1');
     let relaxed = false;
     // Certification data is patchy for some titles; widen the pool if the kids filter left too few.
-    if (kids === '1' && items.length < 20) {
+    if (kids === '1' && items.length < 60) {
       const more = await collect(a, cat, k, false);
       const ids = new Set(items.map(i => i.id));
       items = items.concat(more.filter(i => !ids.has(i.id)));
