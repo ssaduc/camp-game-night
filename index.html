@@ -454,7 +454,12 @@ summary{cursor:pointer;font-family:var(--f-display);font-size:1.05rem}
       <div><div class="lab">이미지</div><div class="chips" id="pKind"></div></div>
       <div><div class="lab">공개 방식</div><div class="chips" id="pMode"></div></div>
       <div><div class="lab">공개 속도</div><div class="chips" id="pPace"></div></div>
-      <div><div class="lab">문제 수</div><div class="chips" id="pCount"></div></div>
+      <div><div class="lab">진행 방식</div><div class="chips" id="pPlay"></div></div>
+      <div id="pTeamsRow" hidden><div class="lab">참가 가족 수</div>
+        <div class="stepper"><button type="button" id="pTMinus" aria-label="가족 수 줄이기">−</button><output id="pTCount">4가족</output><button type="button" id="pTPlus" aria-label="가족 수 늘리기">+</button></div>
+        <p class="sub" style="margin-top:8px">가족마다 겹치지 않는 문제를 받아요. 유명한 정도도 비슷하게 나눠요.</p>
+      </div>
+      <div><div class="lab" id="pCountLab">문제 수</div><div class="chips" id="pCount"></div></div>
       <label class="toggle2"><input type="checkbox" id="pKids" checked> 아이와 함께 (영화는 12세 관람가 이하 위주)</label>
       <p class="credit">This product uses the TMDB API but is not endorsed or certified by TMDB. 영화·드라마 정보와 이미지 출처: The Movie Database (TMDB)</p>
     </div>
@@ -463,6 +468,15 @@ summary{cursor:pointer;font-family:var(--f-display);font-size:1.05rem}
   <div class="ph" data-ph="loading" hidden>
     <div class="center"><div class="load"></div><p class="note" id="pLoadMsg">포스터 불러오는 중</p></div>
     <div class="btns" id="pErrBtns" hidden><button class="btn ghost" data-home>홈</button><button class="btn" id="pRetry">다시 시도</button></div>
+  </div>
+  <div class="ph" data-ph="team" hidden>
+    <div class="center">
+      <div class="note" id="pTeamN">1 / 4</div>
+      <div class="big" id="pTeamWho" style="font-size:clamp(2rem,10vw,3.4rem)">1번 가족 차례</div>
+      <div class="list" id="pBoard" style="width:100%;max-width:26rem"></div>
+      <button type="button" class="round go" id="pTeamGo" style="width:min(44vmin,15rem)"><span class="b1" style="font-size:clamp(2rem,10vmin,4rem)">START</span><span class="b2" id="pTeamGoSub">문제 10개</span></button>
+      <p class="note">가족마다 문제가 모두 달라서 다른 가족이 같이 봐도 괜찮아요.</p>
+    </div>
   </div>
   <div class="ph" data-ph="play" hidden>
     <div class="bar" style="padding-top:0"><span class="score" id="pScore">0점</span><span style="flex:1"></span><span class="pill" id="pNum">1/10</span></div>
@@ -475,7 +489,7 @@ summary{cursor:pointer;font-family:var(--f-display);font-size:1.05rem}
   </div>
   <div class="ph" data-ph="result" hidden>
     <div class="stack">
-      <div class="center" style="flex:none;padding-top:8px"><div class="note">총 점수</div><div class="huge" id="pRes">0</div></div>
+      <div class="center" style="flex:none;padding-top:8px"><div class="note" id="pResLabel">총 점수</div><div class="huge" id="pRes">0</div></div>
       <div class="list" id="pList"></div>
     </div>
     <div class="btns"><button class="btn ghost" data-home>홈</button><button class="btn" id="pAgain">한 번 더</button></div>
@@ -953,7 +967,7 @@ $('#xRe').onclick=function(){xPenalty();sfx.slot();replay($('#xPen'))};
 
 /* ---------- 6. poster quiz (needs the /api/tmdb proxy; hidden where it is unreachable) ---------- */
 var API='api/tmdb';
-var ps=$('#s-poster'),P={cat:'kr_movie',kind:'poster',mode:'blur',pace:'auto',count:10,kids:true,items:[],i:0,stage:0,hint:false,score:0,log:[],live:false};
+var ps=$('#s-poster'),P={cat:'kr_movie',kind:'poster',mode:'blur',pace:'auto',play:'solo',teams:4,count:10,kids:true,items:[],i:0,stage:0,hint:false,score:0,log:[],live:false};
 var PCATS=[{k:'kr_movie',l:'한국 영화',e:'🎥',c:'#ffd23f'},{k:'kr_tv',l:'한국 드라마',e:'📺',c:'#ff5fa8'},{k:'anim',l:'애니메이션',e:'🧸',c:'#86f56b'},{k:'world',l:'해외 영화',e:'🌎',c:'#3fe0ff'},{k:'mix',l:'다 섞기',e:'🎲',c:'#fff6e3'},{k:'kids',l:'어린이 만화',e:'🐣',c:'#ff9f43'}];
 var BLUR=[38,22,12,5,0],ZOOM=[5,3.4,2.3,1.5,1];
 (function(){
@@ -968,6 +982,12 @@ var BLUR=[38,22,12,5,0],ZOOM=[5,3.4,2.3,1.5,1];
 })();
 chips($('#pKind'),[{label:'포스터',value:'poster'},{label:'명장면 (글자 없음)',value:'backdrop'}],P.kind,function(v){P.kind=v});
 chips($('#pMode'),[{label:'흐림 → 선명',value:'blur'},{label:'확대 → 전체',value:'zoom'},{label:'둘 다',value:'both'},{label:'한번에 공개',value:'none'}],P.mode,function(v){P.mode=v});
+chips($('#pPlay'),[{label:'한 가족',value:'solo'},{label:'가족 대항전',value:'team'}],P.play,function(v){
+  P.play=v;$('#pTeamsRow').hidden=v!=='team';$('#pCountLab').textContent=v==='team'?'가족당 문제 수':'문제 수';
+});
+function pTeamsText(){$('#pTCount').textContent=P.teams+'가족'}
+$('#pTMinus').onclick=function(){if(P.teams>2){P.teams--;pTeamsText();sfx.tap()}};
+$('#pTPlus').onclick=function(){if(P.teams<8){P.teams++;pTeamsText();sfx.tap()}};
 chips($('#pPace'),[{label:'자동 (3초마다)',value:'auto'},{label:'터치할 때마다',value:'tap'}],P.pace,function(v){P.pace=v});
 chips($('#pCount'),[5,10,15].map(function(n){return{label:n+'문제',value:n}}),P.count,function(v){P.count=v});
 $('#pKids').addEventListener('change',function(){P.kids=$('#pKids').checked});
@@ -983,8 +1003,13 @@ function pLoad(){
   fetch(url).then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j&&j.error||('서버 오류 '+r.status));return j})})
   .then(function(j){
     var items=(j.items||[]).filter(function(x){return x.image});
-    if(items.length<P.count)throw new Error('이미지를 충분히 찾지 못했어요. 다른 종류를 골라 주세요.');
-    P.items=pPick(items);P.i=0;P.score=0;P.log=[];
+    var need=P.play==='team'?P.teams*P.count:P.count;
+    if(items.length<need){
+      if(P.play==='team')throw new Error('이 종류는 작품이 '+items.length+'개라 '+P.teams+'가족에게 '+P.count+'문제씩 나눌 수 없어요. 문제 수를 줄이거나 다른 종류를 골라 주세요.');
+      throw new Error('이미지를 충분히 찾지 못했어요. 다른 종류를 골라 주세요.');
+    }
+    if(P.play==='team'){P.sets=pDeal(items);P.team=0;P.teamScores=[];for(var t=0;t<P.teams;t++)P.teamScores.push(0);pTeamIntro();return}
+    P.items=pPick(items,P.count);P.i=0;P.score=0;P.log=[];
     pPreload(0);pPreload(1);pShow();
   }).catch(function(e){
     $('#pLoadMsg').textContent=(e&&e.message)||'불러오지 못했어요. 인터넷 연결을 확인해 주세요.';$('#pErrBtns').hidden=false;sfx.fail();
@@ -994,14 +1019,41 @@ function pLoad(){
 var SEEN_KEY='posterSeen';
 function seenGet(){try{var a=JSON.parse(localStorage.getItem(SEEN_KEY)||'[]');return Array.isArray(a)?a:[]}catch(e){return[]}}
 function seenAdd(id){var a=seenGet().filter(function(x){return x!==id});a.push(id);if(a.length>500)a=a.slice(-500);try{localStorage.setItem(SEEN_KEY,JSON.stringify(a))}catch(e){}}
-function pPick(items){
-  items=items.slice().sort(function(a,b){return (b.fame||0)-(a.fame||0)});
-  var seen={};seenGet().forEach(function(id){seen[id]=1});
-  var fresh=items.filter(function(x){return !seen[x.id]});
-  if(fresh.length<P.count)fresh=items;
-  var win=fresh.slice(0,Math.max(P.count+Math.ceil(P.count/2),12));
-  return shuffle(win).slice(0,P.count).sort(function(a,b){return (b.fame||0)-(a.fame||0)});
+function byFame(a,b){return (b.fame||0)-(a.fame||0)}
+/* unseen titles first (most famous first), then titles seen longest ago */
+function pOrder(items){
+  var order={};seenGet().forEach(function(id,i){order[id]=i});
+  var unseen=items.filter(function(x){return order[x.id]===undefined}).sort(byFame);
+  var old=items.filter(function(x){return order[x.id]!==undefined}).sort(function(a,b){return order[a.id]-order[b.id]});
+  return {unseen:unseen,all:unseen.concat(old)};
 }
+function pPick(items,n){
+  var o=pOrder(items),w;
+  if(o.unseen.length>=n)w=o.unseen.slice(0,Math.min(o.unseen.length,Math.max(n+Math.ceil(n/2),12)));
+  else w=o.all.slice(0,n);
+  return shuffle(w).slice(0,n).sort(byFame);
+}
+/* family match: one draw for everyone (no title shared between families), dealt snake-style so difficulty is even */
+function pDeal(items){
+  var picked=pPick(items,P.teams*P.count),sets=[],t;
+  for(t=0;t<P.teams;t++)sets.push([]);
+  var start=Math.floor(Math.random()*P.teams);
+  picked.forEach(function(it,i){var r=Math.floor(i/P.teams),pos=i%P.teams,k=r%2===0?pos:P.teams-1-pos;sets[(k+start)%P.teams].push(it)});
+  return sets;
+}
+function pTeamIntro(){
+  phase(ps,'team');
+  $('#pTeamN').textContent=(P.team+1)+' / '+P.teams;
+  $('#pTeamWho').textContent=(P.team+1)+'번 가족 차례';
+  $('#pTeamGoSub').textContent='문제 '+P.sets[P.team].length+'개';
+  var board=$('#pBoard');board.innerHTML='';
+  if(P.team>0){for(var t=0;t<P.team;t++){var d=document.createElement('div');d.className='li';d.innerHTML='<span class="v"></span><span class="t"></span>';d.firstChild.textContent=(t+1)+'번 가족';d.lastChild.textContent=P.teamScores[t]+'점';board.appendChild(d)}}
+  board.hidden=P.team===0;
+  var im=new Image();im.src=P.sets[P.team][0].image;
+  replay($('#pTeamGo'));sfx.slot();
+}
+$('#pTeamGo').onclick=function(){audio();P.items=P.sets[P.team];P.i=0;P.score=0;P.log=[];pPreload(1);pShow()};
+function pScoreText(){return (P.play==='team'?(P.team+1)+'번 가족 · ':'')+P.score+'점'}
 function pPreload(i){if(P.items[i]){var im=new Image();im.src=P.items[i].image}}
 function pApply(){
   var img=$('#pImg'),s=P.stage,b=0,z=1;
@@ -1017,7 +1069,7 @@ function pApply(){
 function pShow(){
   var it=P.items[P.i];P.stage=0;P.hint=false;P.live=true;seenAdd(it.id);
   phase(ps,'play');
-  $('#pNum').textContent=(P.i+1)+'/'+P.items.length;$('#pScore').textContent=P.score+'점';
+  $('#pNum').textContent=(P.i+1)+'/'+P.items.length;$('#pScore').textContent=pScoreText();
   $('#pAns').hidden=true;$('#pHint').hidden=true;$('#pJudgeBtns').hidden=false;$('#pHintRow').hidden=false;$('#pNextBtns').hidden=true;$('#pUndoRow').hidden=true;$('#pHintBtn').disabled=false;
   var box=$('#pBox'),img=$('#pImg');
   box.classList.toggle('cover',P.mode==='zoom'||P.mode==='both');
@@ -1037,14 +1089,14 @@ function pJudge(hit){
   P.live=false;clearAll();P.last={hit:hit,pts:pts};
   P.log.push({t:it.title,p:hit?pts:0});
   if(hit){P.score+=pts;S.team+=pts;save();sfx.correct();buzz(35)}else sfx.pass();
-  $('#pScore').textContent=P.score+'점';
+  $('#pScore').textContent=pScoreText();
   $('#pBox').classList.remove('crop','tap','cover');$('#pTap').hidden=true;
   P.stage=4;pApply();
   $('#pTitle').textContent=it.title;
   $('#pMeta').textContent=[it.year,it.type==='tv'?'드라마·시리즈':'영화',it.original&&it.original!==it.title?it.original:''].filter(Boolean).join(' · ');
   $('#pJudgeBtns').hidden=true;$('#pHintRow').hidden=true;$('#pHint').hidden=true;
   $('#pAns').hidden=false;fitPoster();
-  $('#pNext').textContent=P.i<P.items.length-1?'다음 문제':'결과 보기';
+  $('#pNext').textContent=P.i<P.items.length-1?'다음 문제':(P.play==='team'?(P.team<P.teams-1?'다음 가족':'최종 결과'):'결과 보기');
   $('#pNextBtns').hidden=false;$('#pUndoRow').hidden=!hit;
   if(!hit)later(sfx.slot,250);
 }
@@ -1057,11 +1109,33 @@ $('#pMiss').onclick=function(){pJudge(false)};
 $('#pUndo').onclick=function(){
   if(!P.last||!P.last.hit)return;
   P.score-=P.last.pts;S.team-=P.last.pts;save();P.log[P.log.length-1].p=0;P.last.hit=false;
-  $('#pScore').textContent=P.score+'점';$('#pUndoRow').hidden=true;sfx.fail();
+  $('#pScore').textContent=pScoreText();$('#pUndoRow').hidden=true;sfx.fail();
 };
-$('#pNext').onclick=function(){sfx.tap();P.i++;if(P.i<P.items.length)pShow();else pFinish()};
+$('#pNext').onclick=function(){
+  sfx.tap();P.i++;
+  if(P.i<P.items.length)return pShow();
+  if(P.play!=='team')return pFinish();
+  P.teamScores[P.team]=P.score;
+  if(P.team<P.teams-1){P.team++;pTeamIntro()}else pFinishTeams();
+};
+function pFinishTeams(){
+  clearAll();
+  var rows=P.teamScores.map(function(sc,t){return{t:t,sc:sc}}).sort(function(a,b){return b.sc-a.sc});
+  var best=rows[0].sc,win=rows.filter(function(r){return r.sc===best});
+  $('#pResLabel').textContent=win.length>1?'공동 우승':'우승';
+  var res=$('#pRes');res.textContent=win.map(function(r){return (r.t+1)+'번 가족'}).join(', ');res.style.fontSize='clamp(2.2rem,11vw,4.5rem)';
+  var list=$('#pList');list.innerHTML='';
+  rows.forEach(function(r,k){
+    var d=document.createElement('div');d.className='li'+(r.sc===best?' win':'');
+    var a=document.createElement('span');a.className='k';a.textContent=k+1;
+    var b=document.createElement('span');b.className='v';b.textContent=(r.t+1)+'번 가족';
+    var c=document.createElement('span');c.className='t';c.textContent=r.sc+'점';
+    d.appendChild(a);d.appendChild(b);d.appendChild(c);list.appendChild(d);
+  });
+  phase(ps,'result');sfx.fanfare();confetti(180);
+}
 function pFinish(){
-  clearAll();$('#pRes').textContent=P.score;
+  clearAll();$('#pResLabel').textContent='총 점수';$('#pRes').style.fontSize='';$('#pRes').textContent=P.score;
   var list=$('#pList');list.innerHTML='';
   P.log.forEach(function(r,k){
     var d=document.createElement('div');d.className='li'+(r.p?' win':'');
